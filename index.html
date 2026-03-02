@@ -63,9 +63,9 @@
   }
 
   .photo-container img {
-    width: min(80vw, 400px);
+    width: min(90vw, 550px);
     height: auto;
-    max-height: 50dvh;
+    max-height: 65dvh;
     object-fit: cover;
     border: 8px solid #ff00de;
     border-radius: 20px;
@@ -128,8 +128,8 @@
     animation-delay: 0.8s;
     animation-fill-mode: forwards;
   }
-  .banner-top { top: 6%; }
-  .banner-bottom { top: auto; bottom: 6%; }
+  .banner-top { top: 4%; }
+  .banner-bottom { top: auto; bottom: 4%; }
   @keyframes bannerPulse {
     0%   { transform: translateX(-50%) scale(1) rotate(-2deg); }
     100% { transform: translateX(-50%) scale(1.15) rotate(2deg); }
@@ -161,14 +161,17 @@
   .dino {
     position: fixed;
     z-index: 6;
-    font-size: 50px;
     pointer-events: none;
     animation: dinoFly linear forwards;
   }
+  .dino img {
+    width: 100%;
+    height: 100%;
+  }
   @keyframes dinoFly {
-    0%   { transform: translateX(0) rotate(0deg) scale(0.5); opacity: 1; }
-    50%  { transform: translateX(50vw) rotate(180deg) scale(1.5); opacity: 1; }
-    100% { transform: translateX(100vw) rotate(360deg) scale(0.5); opacity: 0; }
+    0%   { transform: translateX(0) scale(0.5); opacity: 1; }
+    50%  { transform: translateX(50vw) scale(1.2); opacity: 1; }
+    100% { transform: translateX(100vw) scale(0.5); opacity: 0; }
   }
 
   /* CONFETTI */
@@ -383,14 +386,17 @@ function spawnSparkle() {
 setInterval(spawnSparkle, 80);
 
 // ===== CUTE DINOS =====
-const dinoEmojis = ['🦕','🦖','🐊','🐉','🐲'];
 function spawnDino() {
   const el = document.createElement('div');
   el.className = 'dino';
-  el.textContent = dinoEmojis[Math.floor(Math.random() * dinoEmojis.length)];
+  const img = document.createElement('img');
+  img.src = 'Image Background Removed.png';
+  el.appendChild(img);
+  const size = 60 + Math.random() * 80;
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
   el.style.top = Math.random() * 80 + 'vh';
-  el.style.left = '-80px';
-  el.style.fontSize = (40 + Math.random() * 50) + 'px';
+  el.style.left = '-' + (size + 20) + 'px';
   el.style.animationDuration = (3 + Math.random() * 4) + 's';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 8000);
