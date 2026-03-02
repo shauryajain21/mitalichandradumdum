@@ -456,7 +456,7 @@ const alertMessages = [
 let alertIndex = 0;
 
 function spawnFakeAlert() {
-  if (document.querySelectorAll('.fake-alert').length >= 5) return;
+  if (document.querySelectorAll('.fake-alert').length >= 2) return;
   const el = document.createElement('div');
   el.className = 'fake-alert';
   const msg = alertMessages[alertIndex % alertMessages.length];
@@ -465,15 +465,20 @@ function spawnFakeAlert() {
     <div>${msg}</div>
     <button class="close-btn">OK</button>
   `;
-  el.style.top = (15 + Math.random() * 55) + '%';
-  el.style.left = (10 + Math.random() * 60) + '%';
+  // Position above or below the center image
+  const inTop = Math.random() > 0.5;
+  el.style.top = inTop ? (2 + Math.random() * 12) + '%' : 'auto';
+  el.style.bottom = inTop ? 'auto' : (2 + Math.random() * 12) + '%';
+  el.style.left = (15 + Math.random() * 50) + '%';
   el.querySelector('.close-btn').addEventListener('click', () => {
     // instead of closing, spawn MORE alerts
     spawnFakeAlert();
     spawnFakeAlert();
     // and move this one
-    el.style.top = (15 + Math.random() * 55) + '%';
-    el.style.left = (10 + Math.random() * 60) + '%';
+    const moveTop = Math.random() > 0.5;
+    el.style.top = moveTop ? (2 + Math.random() * 12) + '%' : 'auto';
+    el.style.bottom = moveTop ? 'auto' : (2 + Math.random() * 12) + '%';
+    el.style.left = (15 + Math.random() * 50) + '%';
   });
   document.body.appendChild(el);
   // auto-remove after a while so page doesn't get too cluttered
