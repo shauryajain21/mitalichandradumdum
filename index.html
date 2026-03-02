@@ -3,17 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You Won a Free Gift Card!!!</title>
+<title>MITALI CHANDRA IS A DUM DUM</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     overflow: hidden;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     background: #000;
     font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='font-size:24px'><text y='50%'>🦖</text></svg>") 16 16, auto;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
   }
 
   /* SIREN FLASH */
@@ -58,9 +63,9 @@
   }
 
   .photo-container img {
-    width: min(70vw, 400px);
+    width: min(80vw, 400px);
     height: auto;
-    max-height: 55vh;
+    max-height: 50dvh;
     object-fit: cover;
     border: 8px solid #ff00de;
     border-radius: 20px;
@@ -109,10 +114,10 @@
   /* BANNER TEXT */
   .banner {
     position: fixed;
-    top: 5%; left: 50%;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 20;
-    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    font-size: clamp(1.2rem, 4.5vw, 3.5rem);
     font-weight: 900;
     text-align: center;
     white-space: nowrap;
@@ -123,6 +128,8 @@
     animation-delay: 0.8s;
     animation-fill-mode: forwards;
   }
+  .banner-top { top: 6%; }
+  .banner-bottom { top: auto; bottom: 6%; }
   @keyframes bannerPulse {
     0%   { transform: translateX(-50%) scale(1) rotate(-2deg); }
     100% { transform: translateX(-50%) scale(1.15) rotate(2deg); }
@@ -135,12 +142,6 @@
     66%  { color: #0088ff; }
     83%  { color: #ff00ff; }
     100% { color: #ff0000; }
-  }
-
-  .banner-bottom {
-    top: auto;
-    bottom: 4%;
-    font-size: clamp(1rem, 3vw, 2rem);
   }
 
   /* SPARKLE PARTICLE */
@@ -208,6 +209,11 @@
   }
   .marquee-bar.top { top: 0; }
   .marquee-bar.bottom { bottom: 0; }
+  @media (max-width: 600px) {
+    .marquee-bar { font-size: 1rem; padding: 4px 0; }
+    .fake-alert { padding: 14px 18px; font-size: 0.95rem; max-width: 85vw; }
+    .fake-alert .close-btn { font-size: 0.85rem; padding: 5px 14px; }
+  }
   .marquee-text {
     display: inline-block;
     animation: marqueeScroll 8s linear infinite;
@@ -284,18 +290,18 @@
 <!-- MARQUEE BARS -->
 <div class="marquee-bar top">
   <span class="marquee-text">
-    &nbsp;&nbsp;&nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp;
+    &nbsp;&nbsp;&nbsp; MITALI CHANDRA IS A DUM DUM &nbsp; MITALI CHANDRA IS A DUM DUM &nbsp; MITALI CHANDRA IS A DUM DUM &nbsp; MITALI CHANDRA IS A DUM DUM &nbsp;
   </span>
 </div>
 <div class="marquee-bar bottom">
   <span class="marquee-text" style="animation-direction: reverse;">
-    &nbsp;&nbsp;&nbsp; YOU HAVE BEEN PRANKED &nbsp; YOU CANNOT ESCAPE &nbsp; YOU HAVE BEEN PRANKED &nbsp; YOU CANNOT ESCAPE &nbsp; YOU HAVE BEEN PRANKED &nbsp;
+    &nbsp;&nbsp;&nbsp; MITALI CHANDRA IS A DUM DUM &nbsp; MITALI CHANDRA IS A DUM DUM &nbsp; MITALI CHANDRA IS A DUM DUM &nbsp; MITALI CHANDRA IS A DUM DUM &nbsp;
   </span>
 </div>
 
 <!-- BANNER TEXT -->
-<div class="banner">MITALI CHANDRA DUMDUM</div>
-<div class="banner banner-bottom">YOU JUST GOT PRANKED</div>
+<div class="banner banner-top">MITALI CHANDRA IS A DUM DUM</div>
+<div class="banner banner-bottom">MITALI CHANDRA IS A DUM DUM</div>
 
 <!-- PHOTO GALLERY -->
 <div class="photo-container">
@@ -432,14 +438,14 @@ setInterval(spawnSideEmoji, 300);
 
 // ===== FAKE UNCLOSABLE ALERT POPUPS =====
 const alertMessages = [
-  "You've been PRANKED! 😂",
-  "This window will NEVER close! 🔒",
-  "Mitali Chandra = DUMDUM confirmed ✅",
-  "Error 404: Escape not found 🚫",
-  "Warning: Maximum dumdum levels detected! ⚠️",
-  "Your browser has been taken over by dinos 🦕",
-  "Nice try clicking that button 😏",
-  "Task failed successfully! 💀",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
 ];
 let alertIndex = 0;
 
@@ -480,7 +486,7 @@ document.addEventListener('contextmenu', e => e.preventDefault());
 
 // Override close attempts
 window.onbeforeunload = function() {
-  return "You can't escape Mitali Chandra Dumdum!!! 🦖";
+  return "MITALI CHANDRA IS A DUM DUM";
 };
 
 // Click anywhere = more sparkles
@@ -507,11 +513,9 @@ if (navigator.vibrate) {
 
 // ===== TITLE FLICKERING =====
 const titles = [
-  "🚨 DUMDUM ALERT 🚨",
-  "🦖 YOU GOT PRANKED 🦖",
-  "💀 NO ESCAPE 💀",
-  "😂 MITALI CHANDRA 😂",
-  "⚠️ DUMDUM DETECTED ⚠️",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
+  "MITALI CHANDRA IS A DUM DUM",
 ];
 let titleIdx = 0;
 setInterval(() => {
