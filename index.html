@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Won a Free Gift Card!!!</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    background: #000;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='font-size:24px'><text y='50%'>🦖</text></svg>") 16 16, auto;
+  }
+
+  /* SIREN FLASH */
+  .siren-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    animation: sirenFlash 0.4s infinite alternate;
+    opacity: 0.12;
+  }
+  @keyframes sirenFlash {
+    0%   { background: red; }
+    33%  { background: blue; }
+    66%  { background: magenta; }
+    100% { background: yellow; }
+  }
+
+  /* MAIN PHOTO */
+  .photo-container {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 10;
+    animation: photoEntry 0.6s 0.3s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards,
+               photoBounce 0.5s 0.9s ease infinite alternate,
+               photoShake 0.1s 0.9s linear infinite;
+  }
+  @keyframes photoEntry {
+    0%   { transform: translate(-50%, -300%) scale(0) rotate(-30deg); }
+    60%  { transform: translate(-50%, -40%) scale(1.3) rotate(10deg); }
+    80%  { transform: translate(-50%, -55%) scale(0.9) rotate(-5deg); }
+    100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  }
+  @keyframes photoBounce {
+    0%   { margin-top: 0; }
+    100% { margin-top: -30px; }
+  }
+  @keyframes photoShake {
+    0%   { margin-left: -3px; }
+    25%  { margin-left: 3px; }
+    50%  { margin-left: -2px; }
+    75%  { margin-left: 2px; }
+    100% { margin-left: 0; }
+  }
+
+  .photo-container img {
+    width: min(70vw, 400px);
+    height: auto;
+    max-height: 55vh;
+    object-fit: cover;
+    border: 8px solid #ff00de;
+    border-radius: 20px;
+    box-shadow:
+      0 0 30px #ff00de,
+      0 0 60px #ff00de88,
+      0 0 120px #ff00de44;
+    animation: borderRainbow 1s linear infinite;
+    display: none;
+  }
+  .photo-container img.active {
+    display: block;
+    animation: borderRainbow 1s linear infinite, photoSwapIn 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+  }
+  @keyframes photoSwapIn {
+    0%   { transform: scale(0) rotate(20deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  /* MINI FLOATING PHOTO COPIES */
+  .mini-photo {
+    position: fixed;
+    z-index: 8;
+    pointer-events: none;
+    border: 4px solid #ff00de;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #ff00de88;
+    object-fit: cover;
+    animation: miniFloat linear forwards;
+  }
+  @keyframes miniFloat {
+    0%   { opacity: 1; transform: rotate(0deg) scale(0.3); }
+    50%  { opacity: 1; transform: rotate(180deg) scale(1); }
+    100% { opacity: 0; transform: rotate(360deg) scale(0.3) translateY(-40vh); }
+  }
+  @keyframes borderRainbow {
+    0%   { border-color: #ff0000; box-shadow: 0 0 40px #ff0000, 0 0 80px #ff000066; }
+    16%  { border-color: #ff8800; box-shadow: 0 0 40px #ff8800, 0 0 80px #ff880066; }
+    33%  { border-color: #ffff00; box-shadow: 0 0 40px #ffff00, 0 0 80px #ffff0066; }
+    50%  { border-color: #00ff00; box-shadow: 0 0 40px #00ff00, 0 0 80px #00ff0066; }
+    66%  { border-color: #0088ff; box-shadow: 0 0 40px #0088ff, 0 0 80px #0088ff66; }
+    83%  { border-color: #ff00de; box-shadow: 0 0 40px #ff00de, 0 0 80px #ff00de66; }
+    100% { border-color: #ff0000; box-shadow: 0 0 40px #ff0000, 0 0 80px #ff000066; }
+  }
+
+  /* BANNER TEXT */
+  .banner {
+    position: fixed;
+    top: 5%; left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    font-weight: 900;
+    text-align: center;
+    white-space: nowrap;
+    color: #fff;
+    text-shadow: 0 0 20px #ff0, 0 0 40px #f0f, 0 0 80px #0ff;
+    animation: bannerPulse 0.3s infinite alternate, bannerRainbow 2s linear infinite;
+    opacity: 0;
+    animation-delay: 0.8s;
+    animation-fill-mode: forwards;
+  }
+  @keyframes bannerPulse {
+    0%   { transform: translateX(-50%) scale(1) rotate(-2deg); }
+    100% { transform: translateX(-50%) scale(1.15) rotate(2deg); }
+  }
+  @keyframes bannerRainbow {
+    0%   { color: #ff0000; }
+    16%  { color: #ff8800; }
+    33%  { color: #ffff00; }
+    50%  { color: #00ff88; }
+    66%  { color: #0088ff; }
+    83%  { color: #ff00ff; }
+    100% { color: #ff0000; }
+  }
+
+  .banner-bottom {
+    top: auto;
+    bottom: 4%;
+    font-size: clamp(1rem, 3vw, 2rem);
+  }
+
+  /* SPARKLE PARTICLE */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 5;
+    font-size: 20px;
+    animation: sparkleFloat linear forwards;
+  }
+  @keyframes sparkleFloat {
+    0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(-200px) rotate(720deg) scale(0); }
+  }
+
+  /* FLYING DINOS */
+  .dino {
+    position: fixed;
+    z-index: 6;
+    font-size: 50px;
+    pointer-events: none;
+    animation: dinoFly linear forwards;
+  }
+  @keyframes dinoFly {
+    0%   { transform: translateX(0) rotate(0deg) scale(0.5); opacity: 1; }
+    50%  { transform: translateX(50vw) rotate(180deg) scale(1.5); opacity: 1; }
+    100% { transform: translateX(100vw) rotate(360deg) scale(0.5); opacity: 0; }
+  }
+
+  /* CONFETTI */
+  .confetti {
+    position: fixed;
+    top: -20px;
+    z-index: 4;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(1080deg); opacity: 0.7; }
+  }
+
+  /* FLYING EMOJIS FROM SIDES */
+  .side-emoji {
+    position: fixed;
+    z-index: 7;
+    font-size: 40px;
+    pointer-events: none;
+  }
+
+  /* MARQUEE TEXT */
+  .marquee-bar {
+    position: fixed;
+    z-index: 15;
+    width: 100%;
+    background: #ff00de;
+    color: #000;
+    font-size: 1.3rem;
+    font-weight: 900;
+    padding: 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-bar.top { top: 0; }
+  .marquee-bar.bottom { bottom: 0; }
+  .marquee-text {
+    display: inline-block;
+    animation: marqueeScroll 8s linear infinite;
+  }
+  @keyframes marqueeScroll {
+    0%   { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* NEON RING BURST */
+  .ring-burst {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 5px solid #ff00de;
+    opacity: 0;
+    pointer-events: none;
+    animation: ringExpand 1.5s 0.3s ease-out forwards;
+  }
+  .ring-burst:nth-child(2) { animation-delay: 0.5s; border-color: #00ffff; }
+  .ring-burst:nth-child(3) { animation-delay: 0.7s; border-color: #ffff00; }
+  @keyframes ringExpand {
+    0%   { width: 50px; height: 50px; opacity: 1; border-width: 6px; }
+    100% { width: 150vmax; height: 150vmax; opacity: 0; border-width: 1px; }
+  }
+
+  /* UNCLOSABLE "ALERT" BOXES */
+  .fake-alert {
+    position: fixed;
+    z-index: 25;
+    background: #222;
+    border: 3px solid #ff00de;
+    border-radius: 16px;
+    padding: 20px 28px;
+    color: #fff;
+    font-size: 1.1rem;
+    text-align: center;
+    box-shadow: 0 0 30px #ff00de88;
+    animation: alertPop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards;
+    transform: scale(0);
+    cursor: not-allowed;
+  }
+  @keyframes alertPop {
+    to { transform: scale(1); }
+  }
+  .fake-alert .close-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 20px;
+    background: #ff00de;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+
+<!-- SIREN -->
+<div class="siren-overlay"></div>
+
+<!-- NEON RING BURSTS -->
+<div class="ring-burst"></div>
+<div class="ring-burst"></div>
+<div class="ring-burst"></div>
+
+<!-- MARQUEE BARS -->
+<div class="marquee-bar top">
+  <span class="marquee-text">
+    &nbsp;&nbsp;&nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp; MITALIII CHANDRAAA DUMDUM ALERT &nbsp;
+  </span>
+</div>
+<div class="marquee-bar bottom">
+  <span class="marquee-text" style="animation-direction: reverse;">
+    &nbsp;&nbsp;&nbsp; YOU HAVE BEEN PRANKED &nbsp; YOU CANNOT ESCAPE &nbsp; YOU HAVE BEEN PRANKED &nbsp; YOU CANNOT ESCAPE &nbsp; YOU HAVE BEEN PRANKED &nbsp;
+  </span>
+</div>
+
+<!-- BANNER TEXT -->
+<div class="banner">MITALI CHANDRA DUMDUM</div>
+<div class="banner banner-bottom">YOU JUST GOT PRANKED</div>
+
+<!-- PHOTO GALLERY -->
+<div class="photo-container">
+  <img class="prank-photo active" src="PHOTO-2026-02-24-10-31-15.jpg" alt="PRANKED" />
+  <img class="prank-photo" src="PHOTO-2026-02-22-18-42-52.jpg" alt="PRANKED" />
+  <img class="prank-photo" src="SCR-20260301-ujig.jpeg" alt="PRANKED" />
+  <img class="prank-photo" src="SCR-20260301-ujps.jpeg" alt="PRANKED" />
+</div>
+
+<script>
+// ===== SOUND: Annoying siren using Web Audio =====
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSiren() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+  osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.5);
+  osc.frequency.linearRampToValueAtTime(300, audioCtx.currentTime + 1);
+  gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 1);
+}
+
+// Play siren repeatedly
+let sirenCount = 0;
+const sirenInterval = setInterval(() => {
+  playSiren();
+  sirenCount++;
+  if (sirenCount > 20) clearInterval(sirenInterval);
+}, 1000);
+playSiren(); // immediate first one
+
+// ===== PHOTO SLIDESHOW =====
+const photos = document.querySelectorAll('.prank-photo');
+const photoSrcs = [
+  'PHOTO-2026-02-24-10-31-15.jpg',
+  'PHOTO-2026-02-22-18-42-52.jpg',
+  'SCR-20260301-ujig.jpeg',
+  'SCR-20260301-ujps.jpeg',
+];
+let currentPhoto = 0;
+setInterval(() => {
+  photos[currentPhoto].classList.remove('active');
+  currentPhoto = (currentPhoto + 1) % photos.length;
+  photos[currentPhoto].classList.add('active');
+}, 1500);
+
+// ===== MINI FLOATING PHOTO COPIES =====
+function spawnMiniPhoto() {
+  const img = document.createElement('img');
+  img.className = 'mini-photo';
+  img.src = photoSrcs[Math.floor(Math.random() * photoSrcs.length)];
+  img.style.width = (60 + Math.random() * 100) + 'px';
+  img.style.height = (60 + Math.random() * 100) + 'px';
+  img.style.left = Math.random() * 90 + 'vw';
+  img.style.top = (50 + Math.random() * 50) + 'vh';
+  img.style.animationDuration = (3 + Math.random() * 4) + 's';
+  document.body.appendChild(img);
+  setTimeout(() => img.remove(), 8000);
+}
+setInterval(spawnMiniPhoto, 800);
+
+// ===== SPARKLES =====
+const sparkleEmojis = ['✨','⭐','🌟','💖','💫','🔥','💥','⚡','🌈','💎','🎀'];
+function spawnSparkle() {
+  const el = document.createElement('div');
+  el.className = 'sparkle';
+  el.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.top = Math.random() * 100 + 'vh';
+  el.style.fontSize = (15 + Math.random() * 30) + 'px';
+  el.style.animationDuration = (1 + Math.random() * 2) + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+setInterval(spawnSparkle, 80);
+
+// ===== CUTE DINOS =====
+const dinoEmojis = ['🦕','🦖','🐊','🐉','🐲'];
+function spawnDino() {
+  const el = document.createElement('div');
+  el.className = 'dino';
+  el.textContent = dinoEmojis[Math.floor(Math.random() * dinoEmojis.length)];
+  el.style.top = Math.random() * 80 + 'vh';
+  el.style.left = '-80px';
+  el.style.fontSize = (40 + Math.random() * 50) + 'px';
+  el.style.animationDuration = (3 + Math.random() * 4) + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 8000);
+}
+setInterval(spawnDino, 600);
+
+// ===== CONFETTI =====
+const confettiColors = ['#ff0000','#ff8800','#ffff00','#00ff00','#00aaff','#ff00ff','#ff00aa','#00ffcc'];
+function spawnConfetti() {
+  const el = document.createElement('div');
+  el.className = 'confetti';
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+  el.style.width = (6 + Math.random() * 12) + 'px';
+  el.style.height = (6 + Math.random() * 12) + 'px';
+  el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+  el.style.animationDuration = (2 + Math.random() * 3) + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 6000);
+}
+setInterval(spawnConfetti, 50);
+
+// ===== SIDE EMOJIS =====
+const sideEmojis = ['😂','🤣','💀','🫵','🎉','🎊','😈','👀','🤡','💃','🕺','🙈'];
+function spawnSideEmoji() {
+  const el = document.createElement('div');
+  el.className = 'side-emoji';
+  el.textContent = sideEmojis[Math.floor(Math.random() * sideEmojis.length)];
+  const fromLeft = Math.random() > 0.5;
+  el.style.top = Math.random() * 90 + 'vh';
+  el.style.fontSize = (30 + Math.random() * 40) + 'px';
+  const startX = fromLeft ? -60 : window.innerWidth + 60;
+  const endX = fromLeft ? window.innerWidth + 60 : -60;
+  el.style.left = startX + 'px';
+  const dur = 2 + Math.random() * 3;
+  el.style.transition = `left ${dur}s linear, top ${dur}s ease-in-out`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => {
+    el.style.left = endX + 'px';
+    el.style.top = (Math.random() * 90) + 'vh';
+  });
+  setTimeout(() => el.remove(), (dur + 1) * 1000);
+}
+setInterval(spawnSideEmoji, 300);
+
+// ===== FAKE UNCLOSABLE ALERT POPUPS =====
+const alertMessages = [
+  "You've been PRANKED! 😂",
+  "This window will NEVER close! 🔒",
+  "Mitali Chandra = DUMDUM confirmed ✅",
+  "Error 404: Escape not found 🚫",
+  "Warning: Maximum dumdum levels detected! ⚠️",
+  "Your browser has been taken over by dinos 🦕",
+  "Nice try clicking that button 😏",
+  "Task failed successfully! 💀",
+];
+let alertIndex = 0;
+
+function spawnFakeAlert() {
+  if (document.querySelectorAll('.fake-alert').length >= 5) return;
+  const el = document.createElement('div');
+  el.className = 'fake-alert';
+  const msg = alertMessages[alertIndex % alertMessages.length];
+  alertIndex++;
+  el.innerHTML = `
+    <div>${msg}</div>
+    <button class="close-btn">OK (just kidding)</button>
+  `;
+  el.style.top = (15 + Math.random() * 55) + '%';
+  el.style.left = (10 + Math.random() * 60) + '%';
+  el.querySelector('.close-btn').addEventListener('click', () => {
+    // instead of closing, spawn MORE alerts
+    spawnFakeAlert();
+    spawnFakeAlert();
+    // and move this one
+    el.style.top = (15 + Math.random() * 55) + '%';
+    el.style.left = (10 + Math.random() * 60) + '%';
+  });
+  document.body.appendChild(el);
+  // auto-remove after a while so page doesn't get too cluttered
+  setTimeout(() => el.remove(), 12000);
+}
+
+// start popping alerts after 2 seconds
+setTimeout(() => {
+  spawnFakeAlert();
+  setInterval(spawnFakeAlert, 3000);
+}, 2000);
+
+// ===== PREVENT ESCAPE =====
+// Disable right-click
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Override close attempts
+window.onbeforeunload = function() {
+  return "You can't escape Mitali Chandra Dumdum!!! 🦖";
+};
+
+// Click anywhere = more sparkles
+document.addEventListener('click', (e) => {
+  for (let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+      s.style.left = (e.clientX + (Math.random() - 0.5) * 100) + 'px';
+      s.style.top = (e.clientY + (Math.random() - 0.5) * 100) + 'px';
+      s.style.fontSize = (20 + Math.random() * 25) + 'px';
+      s.style.animationDuration = (0.8 + Math.random()) + 's';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 2000);
+    }, i * 30);
+  }
+});
+
+// ===== VIBRATE (mobile) =====
+if (navigator.vibrate) {
+  setInterval(() => navigator.vibrate([100, 50, 100, 50, 200]), 2000);
+}
+
+// ===== TITLE FLICKERING =====
+const titles = [
+  "🚨 DUMDUM ALERT 🚨",
+  "🦖 YOU GOT PRANKED 🦖",
+  "💀 NO ESCAPE 💀",
+  "😂 MITALI CHANDRA 😂",
+  "⚠️ DUMDUM DETECTED ⚠️",
+];
+let titleIdx = 0;
+setInterval(() => {
+  document.title = titles[titleIdx % titles.length];
+  titleIdx++;
+}, 500);
+</script>
+</body>
+</html>
